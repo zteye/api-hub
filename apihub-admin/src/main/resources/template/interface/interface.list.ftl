@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="${request.contextPath}/static/adminlte/plugins/datatables/dataTables.bootstrap.css">
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini ">
+<body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && "off" == cookieMap["adminlte_settings"].value >sidebar-collapse</#if>">
 <div class="wrapper">
     <!-- header -->
 	<@netCommon.commonHeader />
 		<!-- left -->
-	<@netCommon.commonLeft "glueinfo" />
+	<@netCommon.commonLeft "interface" />
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -234,6 +234,6 @@ public class DemoGlueHandler01 implements GlueHandler {
 <script src="${request.contextPath}/static/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
 <script src="${request.contextPath}/static/adminlte/plugins/daterangepicker/moment.min.js"></script>
-<script src="${request.contextPath}/static/js/glueinfo.list.js"></script>
+<script src="${request.contextPath}/static/js/interface.list.js"></script>
 </body>
 </html>
