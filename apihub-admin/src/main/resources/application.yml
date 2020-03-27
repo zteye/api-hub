@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.137.200:3306/xxl_glue?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123456
+  freemarker:
+    enabled: true
+    charset: UTF-8
+    template-loader-path: classpath:/template/
+    prefer-file-system-access: true
+    suffix: .ftl
+    content-type: text/html
+    allow-request-override: true
+    allow-session-override: true
+    cache: true
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: true
+    request-context-attribute: request
+mybatis:
+  mapper-locations: classpath:mybatis-mapper/*Mapper.xml
