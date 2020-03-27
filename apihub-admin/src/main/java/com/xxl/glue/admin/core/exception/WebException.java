@@ -1,5 +1,7 @@
 package com.xxl.glue.admin.core.exception;
 
+import org.springframework.context.annotation.Bean;
+
 /**
  * 自定义异常
  * @author xuxueli 2015-12-12 18:04:30

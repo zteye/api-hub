@@ -16,8 +16,8 @@ spring:
     allow-request-override: true
     allow-session-override: true
     cache: true
-    expose-request-attributes: false
-    expose-session-attributes: false
+    expose-request-attributes: true
+    expose-session-attributes: true
     expose-spring-macro-helpers: true
     request-context-attribute: request
 mybatis:

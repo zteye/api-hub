@@ -3,6 +3,7 @@ package com.xxl.glue.admin.controller.interceptor;
 import com.xxl.glue.admin.controller.annotation.PermessionLimit;
 import com.xxl.glue.admin.core.util.CookieUtil;
 import com.xxl.glue.admin.core.util.PropertiesUtil;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -14,6 +15,7 @@ import java.math.BigInteger;
  * 权限拦截, 简易版
  * @author xuxueli 2015-12-12 18:09:04
  */
+@Component
 public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
 	public static final String LOGIN_IDENTITY_KEY = "XXL_GLUE_LOGIN_IDENTITY";
