@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxl.glue.admin.dao.IioMappingDao">
+	
+	<resultMap id="IoMappingResultMap" type="com.xxl.glue.admin.core.model.IoMapping" >
+		<result column="id" property="id" />
+		<result column="project_id" property="projectId" />
+		<result column="interface_id" property="interfaceId" />
+		<result column="input_rule" property="inputRule" />
+		<result column="output_rule" property="outputRule" />
+		<result column="add_time" property="addTime" />
+		<result column="interfaceName" property="interfaceName" />
+		<result column="interfaceCode" property="interfaceCode" />
+		<result column="projectName" property="projectName" />
+
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		t.id,
+		t.project_id,
+		t.interface_id,
+		t.input_rule,
+		t.output_rule,
+		t.add_time
+	</sql>
+
+
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="IoMappingResultMap">
+		SELECT <include refid="Base_Column_List" />,t1.name as interfaceName ,t1.code as interfaceCode ,t2.name as projectName
+		FROM apihub_iomapping AS t inner join apihub_interface t1 on t.interface_id =t1.id inner join xxl_glue_project t2 on t.project_id =t2.id
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="projectId gt 0">
+				AND t.project_id = #{projectId}
+			</if>
+			<if test="name != null and name!=''">
+				AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+			</if>
+		</trim>
+		ORDER BY id DESC
+		LIMIT #{offset}, #{pagesize}
+	</select>
+
+	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(1)
+		FROM apihub_iomapping AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="projectId gt 0">
+				AND t.project_id = #{projectId}
+			</if>
+			<if test="name != null and name!=''">
+				AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+			</if>
+		</trim>
+	</select>
+	
+	<insert id="save" parameterType="com.xxl.glue.admin.core.model.IoMapping" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO apihub_iomapping (
+		project_id,
+		interface_id,
+		input_rule,
+		output_rule,
+		add_time
+		) VALUES (
+			#{productId},
+			#{interfaceId},
+			#{inputRule},
+			#{outputRule},
+			#{interfaceId},
+		    now()
+		);
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id"> 
+			SELECT LAST_INSERT_ID() 
+		</selectKey> 
+	</insert>
+
+	<update id="update" parameterType="com.xxl.glue.admin.core.model.IoMapping">
+		update apihub_iomapping
+		<trim prefix="set" suffixOverrides=",">
+			<if test="inputRule != null and inputRule!=''">
+			 input_rule = #{inputRule},
+			</if>
+			<if test="outputRule != null and outputRule!=''">
+			 output_rule = #{outputRule},
+			</if>
+		</trim>
+
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer" >
+		DELETE FROM apihub_iomapping
+		where id = #{id}
+	</delete>
+	
+	<select id="loadAll" resultMap="IoMappingResultMap" >
+		SELECT <include refid="Base_Column_List" />
+		FROM apihub_iomapping AS t
+		order by t.id desc
+	</select>
+
+	<select id="load" resultMap="IoMappingResultMap" >
+		SELECT <include refid="Base_Column_List" />
+		FROM apihub_iomapping AS t
+		where t.id = #{id}
+	</select>
+
+</mapper>

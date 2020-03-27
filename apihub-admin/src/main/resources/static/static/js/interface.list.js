@@ -25,16 +25,23 @@ $(function() {
             { "data": 'projectId', "visible" : false},
             {
                 "data": 'name',
-                "width":'20%',
+                "width":'10%',
                 "render": function ( data, type, row ) {
                     return data;
                 }
             },
-            { "data": 'about',"width":'40%'},
-            { "data": 'source', "visible" : false},
+            { "data": 'code',
+                "width":'10%'
+            },
+            { "data": 'type',
+                "width":'10%'
+            },
+            { "data": 'url',
+                "width":'20%'
+            },
             {
                 "data": 'addTime',
-                "visible" : false,
+                "width":'15%',
                 "render": function ( data, type, row ) {
                     return data?moment(new Date(data)).format("YYYY-MM-DD HH:mm:ss"):"";
                 }
@@ -48,17 +55,13 @@ $(function() {
             },
             {
                 "data": '操作' ,
-                "width":'25%',
+                "width":'20%',
                 "render": function ( data, type, row ) {
                     return function(){
-                        // log url
-                        var glueWebIde = base_url +'/glueinfo/glueWebIde?id='+ row.id;
 
                         // html
                         tableData['key'+row.id] = row;
                         var html = '<span id="'+ row.id +'" >'+
-                            '<button class="btn btn-info btn-xs" type="button" onclick="javascript:window.open(\'' + glueWebIde + '\')" >WebIde</button>  '+
-                            '<button class="btn btn-primary btn-xs clearCache" type="button">清理缓存</button>  '+
                             '<button class="btn btn-warning btn-xs update" type="button">编辑</button>  '+
                             '<button class="btn btn-danger btn-xs delete" type="button">删除</button>  '+
                             '</span>';
@@ -105,12 +108,12 @@ $(function() {
     // delete
     $("#glue_list").on('click', '.delete',function() {
         var id = $(this).parent('span').attr("id");
-        layer.confirm('确认删除该GLUE?', {icon: 3, title:'系统提示'}, function(index){
+        layer.confirm('确认删除该接口?', {icon: 3, title:'系统提示'}, function(index){
             layer.close(index);
 
             $.ajax({
                 type : 'POST',
-                url : base_url + "/glueinfo/delete",
+                url : base_url + "/interface/delete",
                 data : {
                     "id" : id
                 },
@@ -159,9 +162,6 @@ $(function() {
                 minlength: 4,
                 maxlength: 50,
                 projectName: true
-            },
-            about : {
-                required : true
             }
         },
         messages : {
@@ -169,9 +169,6 @@ $(function() {
                 required :"请输入“GLUE名称”",
                 minlength: "长度不可少于4",
                 maxlength: "长度不可多余50"
-            },
-            about : {
-                required : "请输入“GLUE描述”"
             }
         },
         highlight : function(element) {
@@ -185,7 +182,7 @@ $(function() {
             element.parent('div').append(error);
         },
         submitHandler : function(form) {
-            $.post(base_url + "/glueinfo/add",  $("#addModal .form").serialize(), function(data, status) {
+            $.post(base_url + "/interface/add",  $("#addModal .form").serialize(), function(data, status) {
                 if (data.code == "200") {
                     $('#addModal').modal('hide');
                     layer.open({
@@ -231,7 +228,12 @@ $(function() {
         $("#updateModal .form input[name='id']").val( row.id );
         $('#updateModal .form select[name=projectId] option[value='+ row.projectId +']').prop('selected', true);
         $("#updateModal .form input[name='name']").val( row.name );
-        $("#updateModal .form input[name='about']").val( row.about );
+        $("#updateModal .form input[name='code']").val( row.code );
+        $("#updateModal .form input[name='type']").val( row.type );
+        $("#updateModal .form input[name='url']").val( row.url );
+        $("#updateModal .form input[name='method']").val( row.method );
+        $("#updateModal .form input[name='action']").val( row.action );
+        $("#updateModal .form input[name='namespace']").val( row.namespace );
 
         // show
         $('#updateModal').modal({backdrop: false, keyboard: false}).modal('show');
@@ -241,14 +243,10 @@ $(function() {
         errorClass : 'help-block',
         focusInvalid : true,
         rules : {
-            about : {
-                required : true
-            }
+
         },
         messages : {
-            about : {
-                required : "请输入“GLUE描述”"
-            }
+
         },
         highlight : function(element) {
             $(element).closest('.form-group').addClass('has-error');
@@ -262,7 +260,7 @@ $(function() {
         },
         submitHandler : function(form) {
             // post
-            $.post(base_url + "/glueinfo/update", $("#updateModal .form").serialize(), function(data, status) {
+            $.post(base_url + "/interface/update", $("#updateModal .form").serialize(), function(data, status) {
                 if (data.code == "200") {
                     $('#updateModal').modal('hide');
                     layer.open({
@@ -286,69 +284,6 @@ $(function() {
     });
     $("#updateModal").on('hide.bs.modal', function () {
         $("#updateModal .form")[0].reset()
-    });
-
-
-    // 清理缓存
-    $("#glue_list").on('click', '.clearCache',function() {
-
-        var id = $(this).parent('span').attr("id");
-        var row = tableData['key'+id];
-        if (!row) {
-            layer.open({
-                title: '系统提示',
-                content: ("任务信息加载失败，请刷新页面"),
-                icon: '2'
-            });
-            return;
-        }
-
-        // base data
-        $("#clearCacheModal .form input[name='id']").val( row.id );
-
-        // show
-        $('#clearCacheModal').modal({backdrop: false, keyboard: false}).modal('show');
-    });
-    var clearCacheValidate = $("#clearCacheModal .form").validate({
-        errorElement : 'span',
-        errorClass : 'help-block',
-        focusInvalid : true,
-        highlight : function(element) {
-            $(element).closest('.form-group').addClass('has-error');
-        },
-        success : function(label) {
-            label.closest('.form-group').removeClass('has-error');
-            label.remove();
-        },
-        errorPlacement : function(error, element) {
-            element.parent('div').append(error);
-        },
-        submitHandler : function(form) {
-            // post
-            $.post(base_url + "/glueinfo/clearCache", $("#clearCacheModal .form").serialize(), function(data, status) {
-                if (data.code == "200") {
-                    $('#clearCacheModal').modal('hide');
-                    layer.open({
-                        title: '系统提示',
-                        content: '清理成功',
-                        icon: '1',
-                        end: function(layero, index){
-                            //window.location.reload();
-                            glueTable.fnDraw();
-                        }
-                    });
-                } else {
-                    layer.open({
-                        title: '系统提示',
-                        content: (data.msg || "清理失败"),
-                        icon: '2'
-                    });
-                }
-            });
-        }
-    });
-    $("#clearCacheModal").on('hide.bs.modal', function () {
-        $("#clearCacheModal .form")[0].reset()
     });
 
 });

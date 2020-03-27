@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxl.glue.admin.dao.IInterfaceDao">
+	
+	<resultMap id="InterfaceResultMap" type="com.xxl.glue.admin.core.model.Interface" >
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="code" property="code" />
+		<result column="type" property="type" />
+		<result column="url" property="url" />
+		<result column="method" property="method" />
+		<result column="namespace" property="namespace" />
+		<result column="action" property="action" />
+		<result column="add_time" property="addTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="project_id" property="projectId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		t.id,
+		t.name,
+		t.code,
+		t.type,
+		t.url,
+		t.method,
+		t.namespace,
+		t.action,
+		t.add_time,
+		t.update_time,
+		t.project_id
+	</sql>
+
+
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="InterfaceResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM apihub_interface AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="projectId gt 0">
+				AND t.project_id = #{projectId}
+			</if>
+			<if test="name != null and name!=''">
+				AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+			</if>
+		</trim>
+		ORDER BY id DESC
+		LIMIT #{offset}, #{pagesize}
+	</select>
+
+	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(1)
+		FROM apihub_interface AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="projectId gt 0">
+				AND t.project_id = #{projectId}
+			</if>
+			<if test="name != null and name!=''">
+				AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+			</if>
+		</trim>
+	</select>
+	
+	<insert id="save" parameterType="com.xxl.glue.admin.core.model.Interface" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO apihub_interface (
+			appname,
+			name
+		) VALUES (
+			#{appname},
+			#{name}
+		);
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id"> 
+			SELECT LAST_INSERT_ID() 
+		</selectKey> 
+	</insert>
+
+	<update id="update" parameterType="com.xxl.glue.admin.core.model.Interface">
+		update apihub_interface
+		set name = #{name}
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer" >
+		DELETE FROM apihub_interface
+		where id = #{id}
+	</delete>
+	
+	<select id="loadAll" resultMap="InterfaceResultMap" >
+		SELECT <include refid="Base_Column_List" />
+		FROM apihub_interface AS t
+		order by t.id desc
+	</select>
+
+	<select id="findByAppname" resultMap="InterfaceResultMap" >
+		SELECT <include refid="Base_Column_List" />
+		FROM apihub_interface AS t
+		where t.name = #{name}
+	</select>
+
+	<select id="load" resultMap="InterfaceResultMap" >
+		SELECT <include refid="Base_Column_List" />
+		FROM apihub_interface AS t
+		where t.id = #{id}
+	</select>
+
+</mapper>

@@ -1,6 +1,12 @@
 server:
   port: 8080
 spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-paths:
+        - /static/**
+        - resources/**
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.137.200:3306/xxl_glue?useUnicode=true&characterEncoding=UTF-8
@@ -15,10 +21,13 @@ spring:
     content-type: text/html
     allow-request-override: true
     allow-session-override: true
-    cache: true
+    cache: false
     expose-request-attributes: true
     expose-session-attributes: true
     expose-spring-macro-helpers: true
     request-context-attribute: request
 mybatis:
   mapper-locations: classpath:mybatis-mapper/*Mapper.xml
+logging:
+  level:
+    com.xxl.glue.admin.dao: debug

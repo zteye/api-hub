@@ -2,12 +2,15 @@ package com.xxl.glue.admin.controller;
 
 import com.xxl.glue.admin.core.model.CodeLog;
 import com.xxl.glue.admin.core.model.GlueInfo;
+import com.xxl.glue.admin.core.model.IoMapping;
 import com.xxl.glue.admin.core.model.Project;
 import com.xxl.glue.admin.core.result.ReturnT;
 import com.xxl.glue.admin.dao.IProjectDao;
 import com.xxl.glue.admin.service.IGlueInfoService;
+import com.xxl.glue.admin.service.IioMappingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/iomaping")
+@RequestMapping("/iomapping")
 public class IoMappingController {
 	
 	@Resource
-	private IGlueInfoService glueInfoService;
+	private IioMappingService ioMappingService;
 	@Resource
 	private IProjectDao projectDao;
 
@@ -32,58 +35,49 @@ public class IoMappingController {
 		List<Project> projectList = projectDao.loadAll();
 		model.addAttribute("projectList", projectList);
 
-		return "iomaping/iomaping.list";
+		return "iomapping/iomapping.list";
 	}
 	
 	@RequestMapping("/pageList")
 	@ResponseBody
 	public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,
 			@RequestParam(required = false, defaultValue = "10") int length, int projectId, String name){
-		return glueInfoService.pageList(start, length, projectId, name);
+		return ioMappingService.pageList(start, length, projectId, name);
 	}
 	
 	@RequestMapping("/delete")
 	@ResponseBody
 	public ReturnT<String> delete(int id){
-		return glueInfoService.delete(id);
+		return ioMappingService.delete(id);
 	}
 	
 	@RequestMapping("/add")
 	@ResponseBody
-	public ReturnT<String> add(GlueInfo codeInfo){
-		return glueInfoService.add(codeInfo);
+	public ReturnT<String> add(IoMapping ioMapping){
+		return ioMappingService.add(ioMapping);
 	}
 
 	@RequestMapping("/update")
 	@ResponseBody
-	public ReturnT<String> update(GlueInfo codeInfo){
-		return glueInfoService.update(codeInfo);
+	public ReturnT<String> update(IoMapping ioMapping){
+		return ioMappingService.update(ioMapping);
 	}
 
 
-	@RequestMapping("/clearCache")
-	@ResponseBody
-	public ReturnT<String> clearCache(int id, String appNames){
-		return glueInfoService.clearCache(id, appNames);
-	}
-	
-	@RequestMapping("/glueWebIde")
-	public String codeSourceEditor(Model model, int id){
-		GlueInfo codeInfo = glueInfoService.load(id);
-		model.addAttribute("codeInfo", codeInfo);
+	@RequestMapping("/{type}/webide")
+	public String codeSourceEditor(@PathVariable String type, Model model, int id){
+		IoMapping ioMapping = ioMappingService.load(id);
+		model.addAttribute("codeInfo", ioMapping);
 		
-		if (codeInfo!=null) {
-			List<CodeLog> codeLogList = glueInfoService.loadLogs(id);
-			model.addAttribute("codeLogList", codeLogList);
+		if (ioMapping!=null) {
+			model.addAttribute("codeLogList", null);
 		}
-		
-		return "glueinfo/glue.webide";
+		if("input".equals(type)){
+			return "iomapping/input.webide";
+		}else{
+			return "iomapping/output.webide";
+		}
 	}
-	
-	@RequestMapping("/updateCodeSource")
-	@ResponseBody
-	public ReturnT<String> updateCodeSource(HttpServletRequest request, CodeLog codeLog){
-		return glueInfoService.updateCodeSource(codeLog);
-	}
+
 
 }

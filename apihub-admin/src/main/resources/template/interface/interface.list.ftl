@@ -19,7 +19,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>GLUE管理<small></small></h1>
+            <h1>接口管理<small></small></h1>
         </section>
 
         <!-- Main content -->
@@ -47,7 +47,7 @@
                     <button class="btn btn-block btn-info" id="searchBtn">搜索</button>
                 </div>
                 <div class="col-xs-2">
-                    <button class="btn btn-block btn-success add" type="button">+新增GLUE</button>
+                    <button class="btn btn-block btn-success add" type="button">+新增接口</button>
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">GLUE列表</h3>
+                            <h3 class="box-title">接口列表</h3>
                         </div>
                         <div class="box-body" >
                             <table id="glue_list" class="table table-bordered table-striped">
@@ -63,9 +63,10 @@
                                 <tr>
                                     <th name="id" >id</th>
                                     <th name="projectId" >项目</th>
-                                    <th name="name" >GlueName</th>
-                                    <th name="about" >描述</th>
-                                    <th name="source" >源码</th>
+                                    <th name="name" >接口名称</th>
+                                    <th name="code" >编码</th>
+                                    <th name="type" >类型</th>
+                                    <th name="url" >地址</th>
                                     <th name="addTime" >新增时间</th>
                                     <th name="updateTime" >更新时间</th>
                                     <th>操作</th>
@@ -90,7 +91,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" >新增GLUE</h4>
+                <h4 class="modal-title" >新增接口</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal form" role="form" >
@@ -105,14 +106,33 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-3 control-label">GLUE<font color="red">*</font></label>
-                        <div class="col-sm-7"><input type="text" class="form-control" name="name" placeholder="请输入“GLUE名称”" maxlength="50" ></div>
+                        <label for="lastname" class="col-sm-3 control-label">接口名称<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="name" placeholder="请输入“接口名称”" maxlength="50" ></div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-3 control-label">描述<font color="red">*</font></label>
-                        <div class="col-sm-7"><input type="text" class="form-control" name="about" placeholder="请输入“描述”" maxlength="20" ></div>
+                        <label for="lastname" class="col-sm-3 control-label">编码<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="code" placeholder="请输入“编码”" maxlength="20" ></div>
                     </div>
-
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">接口类型<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="type" placeholder="请输入“接口类型”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">URL<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="url" placeholder="请输入“接口地址”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">Method<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="method" placeholder="请输入“Method”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">NameSpace<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="namespace" placeholder="请输入“NameSpace”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">Action<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="action" placeholder="请输入“Action”" maxlength="20" ></div>
+                    </div>
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
@@ -177,12 +197,32 @@ public class DemoGlueHandler01 implements GlueHandler {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-3 control-label">GLUE<font color="red">*</font></label>
-                        <div class="col-sm-7"><input type="text" class="form-control" name="name" placeholder="请输入“GLUE名称”" maxlength="50" readonly ></div>
+                        <label for="lastname" class="col-sm-3 control-label">接口名称<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="name" placeholder="请输入“接口名称”" maxlength="50" ></div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-3 control-label">描述<font color="red">*</font></label>
-                        <div class="col-sm-7"><input type="text" class="form-control" name="about" placeholder="请输入“描述”" maxlength="20" ></div>
+                        <label for="lastname" class="col-sm-3 control-label">编码<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="code" placeholder="请输入“编码”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">接口类型<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="type" placeholder="请输入“接口类型”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">URL<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="url" placeholder="请输入“接口地址”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">Method<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="method" placeholder="请输入“Method”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">NameSpace<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="namespace" placeholder="请输入“NameSpace”" maxlength="20" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">Action<font color="red">*</font></label>
+                        <div class="col-sm-7"><input type="text" class="form-control" name="action" placeholder="请输入“Action”" maxlength="20" ></div>
                     </div>
 
                     <hr>

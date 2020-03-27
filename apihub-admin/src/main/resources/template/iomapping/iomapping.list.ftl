@@ -62,12 +62,12 @@
                                 <thead>
                                 <tr>
                                     <th name="id" >id</th>
-                                    <th name="projectId" >项目</th>
-                                    <th name="name" >GlueName</th>
-                                    <th name="about" >描述</th>
-                                    <th name="source" >源码</th>
+                                    <th name="projectId" >项目ID</th>
+                                    <th name="projectName" >项目名称</th>
+                                    <th name="interfaceId" >接口ID</th>
+                                    <th name="interfaceName" >接口名称</th>
+                                    <th name="interfaceCode" >接口编码</th>
                                     <th name="addTime" >新增时间</th>
-                                    <th name="updateTime" >更新时间</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -234,6 +234,6 @@ public class DemoGlueHandler01 implements GlueHandler {
 <script src="${request.contextPath}/static/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
 <script src="${request.contextPath}/static/adminlte/plugins/daterangepicker/moment.min.js"></script>
-<script src="${request.contextPath}/static/js/interface.list.js"></script>
+<script src="${request.contextPath}/static/js/iomapping.list.js"></script>
 </body>
 </html>

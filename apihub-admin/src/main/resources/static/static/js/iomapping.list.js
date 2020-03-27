@@ -22,43 +22,45 @@ $(function() {
         //"scrollX": true,	// X轴滚动条，取消自适应
         "columns": [
             { "data": 'id', "bSortable": false, "visible" : false},
-            { "data": 'projectId', "visible" : false},
-            {
-                "data": 'name',
-                "width":'20%',
-                "render": function ( data, type, row ) {
-                    return data;
-                }
+            { "data": 'projectId',
+                "width":'10%'
             },
-            { "data": 'about',"width":'40%'},
-            { "data": 'source', "visible" : false},
+            { "data": 'projectName',
+                "width":'15%'
+            },
+            {
+                "data": 'interfaceId',
+                "width":'10%'
+            },
+            {
+                "data": 'interfaceName',
+                "width":'15%'
+            },
+            {
+                "data": 'interfaceCode',
+                "width":'10%'
+            },
             {
                 "data": 'addTime',
-                "visible" : false,
-                "render": function ( data, type, row ) {
-                    return data?moment(new Date(data)).format("YYYY-MM-DD HH:mm:ss"):"";
-                }
-            },
-            {
-                "data": 'updateTime',
-                "width":'15%',
+                "width":'10%',
                 "render": function ( data, type, row ) {
                     return data?moment(new Date(data)).format("YYYY-MM-DD HH:mm:ss"):"";
                 }
             },
             {
                 "data": '操作' ,
-                "width":'25%',
+                "width":'20%',
                 "render": function ( data, type, row ) {
                     return function(){
                         // log url
-                        var glueWebIde = base_url +'/glueinfo/glueWebIde?id='+ row.id;
+                        var inputWebIde = base_url +'/iomapping/input/webide?id='+ row.id;
+                        var outputWebIde = base_url +'/iomapping/output/webide?id='+ row.id;
 
                         // html
                         tableData['key'+row.id] = row;
                         var html = '<span id="'+ row.id +'" >'+
-                            '<button class="btn btn-info btn-xs" type="button" onclick="javascript:window.open(\'' + glueWebIde + '\')" >WebIde</button>  '+
-                            '<button class="btn btn-primary btn-xs clearCache" type="button">清理缓存</button>  '+
+                            '<button class="btn btn-info btn-xs" type="button" onclick="javascript:window.open(\'' + inputWebIde + '\')" >INPUT</button>  '+
+                            '<button class="btn btn-info btn-xs" type="button" onclick="javascript:window.open(\'' + outputWebIde + '\')" >OUTPUT</button>  '+
                             '<button class="btn btn-warning btn-xs update" type="button">编辑</button>  '+
                             '<button class="btn btn-danger btn-xs delete" type="button">删除</button>  '+
                             '</span>';
